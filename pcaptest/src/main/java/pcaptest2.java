@@ -63,23 +63,18 @@ public class pcaptest2 {
         //spark.sql("CREATE TABLE IF NOT EXISTS src (TIMESTAMP long, TIMESTAMP_USEC long,TIMESTAMP_MICROS long) USING hive OPTIONS(fileFormat 'org.apache.hadoop.mapred.SequenceFileAsBinaryInputFormat',outputFormat 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat',serde 'MySerDe')");
         //spark.sql("CREATE TABLE IF NOT EXISTS src (ts bigint,ts_micros bigint,ttl int,ip_version int,ip_header_length int) USING hive OPTIONS(fileFormat 'sequencefile',serde 'PcapDeserializer')");
         spark.sql("CREATE TABLE IF NOT EXISTS src (ts bigint, ts_usec double, protocol string, src string, src_port int, dst string, dst_port int, len int, ttl int, dns_queryid int, dns_flags string, dns_opcode string, dns_rcode string, dns_question string, dns_answer array<string>, dns_authority array<string>, dns_additional array<string>,pcapByte binary) USING hive OPTIONS(fileFormat 'sequencefile',serde 'PcapDeserializer')");
-        spark.sql("LOAD DATA LOCAL INPATH '/home/bjbhaha/Envroment/hadoop-2.7.3/bin/music31.seq' INTO TABLE src").show();
+        spark.sql("LOAD DATA LOCAL INPATH"+args[0]+" INTO TABLE src");
 
 // Queries are expressed in HiveQL
-        JavaRDD<Object> pcapByte= spark.sql(args[0]).toJavaRDD().map(row->row.get(0));
+        JavaRDD<Object> pcapByte= spark.sql(args[2]).toJavaRDD().map(row->row.get(0));
 
         //pcapByte.foreach(x->System.out.println(new BytesWritable((byte[])((byte[])(x)))));
-        DataOutputStream dos = new DataOutputStream(new FileOutputStream("/home/bjbhaha/Desktop/music31.pcap"));
+        DataOutputStream dos = new DataOutputStream(new FileOutputStream(args[1]));
         byte pcapHeader[] = new byte[]{(byte) 0xD4, (byte) 0xC3, (byte) 0xB2, (byte) 0xA1, 0x02, 0x00, 0x04,
                 0x00,0x00, 0x00, 0x00, 0x00, 0x00, 0x00,0x00,0x00,0x00,0x00,0x04,0x00,0x01,0x00,0x00,0x00};
         dos.write(pcapHeader,0,24);
         List<byte[]> list=new ArrayList<>();
-//        JavaRDD<BytesWritable> pcapByte2=pcapByte.map(x->{
-//            long packetSize = PcapReaderUtil.convertInt((byte[])((byte[])(x)), 8, false);
-//            BytesWritable a= new BytesWritable((byte[])((byte[])(x)));
-//            a.setSize((int)(packetSize)+16);
-//            return a;
-//        });
+
 
         list=pcapByte.map(x->{//
             long packetSize = PcapReaderUtil.convertInt((byte[])((byte[])(x)), 8, false);
@@ -89,7 +84,7 @@ public class pcaptest2 {
             return a;
         }).collect();
         list.forEach(tt->{
-            System.out.println(new BytesWritable(tt));
+            //System.out.println(new BytesWritable(tt));
             try {
                 dos.write(tt, 0, tt.length);
             } catch (IOException e) {

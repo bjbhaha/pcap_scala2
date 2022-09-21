@@ -9,10 +9,10 @@ public class PcapReaderUtil {
 
 	static {
 		protocols = new HashMap<Integer, String>();
-		protocols.put(1, PcapReader2.PROTOCOL_ICMP);
-		protocols.put(6, PcapReader2.PROTOCOL_TCP);
-		protocols.put(17, PcapReader2.PROTOCOL_UDP);
-		protocols.put(44, PcapReader2.PROTOCOL_FRAGMENT); // Using IPv4 fragment protocol number across protocols (see http://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml)
+		protocols.put(1, "ICMP");
+		protocols.put(6, "TCP");
+		protocols.put(17, "UDP");
+		protocols.put(44, "Fragment"); // Using IPv4 fragment protocol number across protocols (see http://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml)
 	}
 
 	public static long convertInt(byte[] data) {
