@@ -7,7 +7,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="pcap_scala2" />
-        <module name="pcaptest" />
       </profile>
     </annotationProcessing>
   </component>

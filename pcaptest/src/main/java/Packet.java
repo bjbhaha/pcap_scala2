@@ -69,4 +69,9 @@ public class Packet extends HashMap<String, Object> {
 			return sb.substring(0, sb.length() - 1);
 		return null;
 	}
+	public boolean isTCP() {
+		String protocol = (String)get(Packet.PROTOCOL);
+		return protocol == "TCP";
+	}
+
 }

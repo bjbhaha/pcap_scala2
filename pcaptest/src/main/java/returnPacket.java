@@ -61,16 +61,20 @@ public class returnPacket {
     private MathContext tsUsecMc = new MathContext(16);
 
     private Multimap<Datagram, DatagramPayload> datagrams = TreeMultimap.create();
+    //private Multimap<Flow, SequencePayload> flows = TreeMultimap.create();
     private Multimap<Flow, SequencePayload> flows = TreeMultimap.create();
 
     private long snapLen;
 
-    private LinkType linkType;
+    private final LinkType linkType;
 
 
     //byte[] pcapPacketHeader;
     byte[] packetData;
     byte[] pcapPacketHeader = new byte[PACKET_HEADER_SIZE];
+    Collection<SequencePayload> returnFlow(Flow flow){
+        return flows.get(flow);
+    }
     returnPacket(BytesWritable value) {
         this.value = value;
 
@@ -498,7 +502,7 @@ public class returnPacket {
 
                     if (packetPayload.length > 0) {
                         Long seq = (Long) packet.get(Packet.TCP_SEQ);
-                        SequencePayload sequencePayload = new SequencePayload(seq, packetPayload);
+                        SequencePayload sequencePayload = new SequencePayload(seq, this.value.getBytes());
                         flows.put(flow, sequencePayload);
                     }
 

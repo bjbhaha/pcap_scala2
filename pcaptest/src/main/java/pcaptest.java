@@ -72,7 +72,7 @@ public class pcaptest {
     public static void main(String args[]){
         SparkConf conf = new SparkConf().setAppName("pcaptest").setMaster("local[12]");
         JavaSparkContext sc = new JavaSparkContext(conf);
-        JavaPairRDD<IntWritable, BytesWritable> javaRDD =sc.sequenceFile(args[0], IntWritable.class, BytesWritable.class);
+        JavaPairRDD<IntWritable, BytesWritable> javaRDD =sc.sequenceFile("/home/bjbhaha/Envroment/hadoop-2.7.3/bin/music31.seq", IntWritable.class, BytesWritable.class);
         //javaRDD.cache();
         //JavaPairRDD<IntWritable,Text> javaRDD2=javaRDD.ToPair(v2->v2);
         //javaRDD.foreach(x -> x._2.get());
@@ -206,6 +206,13 @@ public class pcaptest {
             list.add(packet);
         });
         System.out.println(list.size());//
+
+
+//        JavaPairRDD<pp, Integer> s=javaRDD.map(tt->{
+//            Packet packet=(new returnPacket(tt._2)).createPacket();
+//            return new Tuple2<pp, Integer>(new pp((long)packet.get("src_port"),(long)packet.get("dst_port"),(long)packet.get("src"),(long)packet.get("src")),1);
+//
+//        });
 
 /*
         class setLength implements Function<Tuple2<IntWritable,BytesWritable>,String> {
