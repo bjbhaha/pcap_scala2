@@ -72,7 +72,7 @@ public class pcaptest {
     public static void main(String args[]){
         SparkConf conf = new SparkConf().setAppName("pcaptest").setMaster("local[12]");
         JavaSparkContext sc = new JavaSparkContext(conf);
-        JavaPairRDD<IntWritable, BytesWritable> javaRDD =sc.sequenceFile("/home/bjbhaha/Envroment/hadoop-2.7.3/bin/music31.seq", IntWritable.class, BytesWritable.class);
+        JavaPairRDD<IntWritable, BytesWritable> javaRDD =sc.sequenceFile("/home/bjbhaha/Envroment/hadoop-2.7.3/bin/file.seq", IntWritable.class, BytesWritable.class);
         //javaRDD.cache();
         //JavaPairRDD<IntWritable,Text> javaRDD2=javaRDD.ToPair(v2->v2);
         //javaRDD.foreach(x -> x._2.get());
@@ -80,16 +80,8 @@ public class pcaptest {
         // JavaPairRDD<IntWritable, ByteArray> javaRDD2=
 
 //        byte[] a={new byte("cf"),c,d};
-//        int b=a.length();
-        //List<Byte> lista= new ArrayList<Byte>() {};
-        //ByteArray ba=
-        //List<BytesWritable> list4=new ArrayList<BytesWritable>();
 
 
-      //  List<String> aa=new ArrayList<>();
-
-        //int []aaa=new int[1];
-        //System.out.println("aa:");javaRDD.foreach(x-> aaa[0]=x._1().get());
         int i=1;
        // System.out.println("a:");javaRDD.foreach(x-> System.out.println(" "+x._1()+" "+x._2().getLength()+" "+x._2()));
 
@@ -203,7 +195,7 @@ public class pcaptest {
         List<Packet> list=new ArrayList<>();
         javaRDD.foreach(tt-> {
             Packet packet=(new returnPacket(tt._2)).createPacket();
-            list.add(packet);
+           // list.add(packet);
         });
         System.out.println(list.size());//
 

@@ -29,9 +29,10 @@ public class pcaptest2 {
                 .master("local[*]")
                 .config("spark.sql.warehouse.dir", warehouseLocation)
                 .config("spark.driver.maxResultSize",0)
-                //.config("spark.sql.warehouse.dir","hdfs://localhost:9000/user/bjbhaha")
                 .enableHiveSupport()
                 .getOrCreate();
+
+        //.config("spark.sql.warehouse.dir","/home/bjbhaha/IdeaProjects/pcap_scala2/pcaptest")
         //spark.sql("CREATE TABLE IF NOT EXISTS src (TIMESTAMP long, TIMESTAMP_USEC long,TIMESTAMP_MICROS long) USING hive OPTIONS(fileFormat 'org.apache.hadoop.mapred.SequenceFileAsBinaryInputFormat',outputFormat 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat',serde 'MySerDe')");
         //spark.sql("CREATE TABLE IF NOT EXISTS src (ts bigint,ts_micros bigint,ttl int,ip_version int,ip_header_length int) USING hive OPTIONS(fileFormat 'sequencefile',serde 'PcapDeserializer')");
         File file = new File("./derby.log"); //相对路径;
@@ -43,35 +44,32 @@ public class pcaptest2 {
             spark.sql("LOAD DATA LOCAL INPATH"+args[0]+" INTO TABLE src");
 
 // Queries are expressed in HiveQL
-        spark.sql("SELECT * FROM src where src regexp '10.222.181.*' and dst regexp '120.240.50.*'").show();
+        //spark.sql("SELECT * FROM src where src regexp '10.222.181.*' and dst regexp '120.240.50.*'").show();
         JavaRDD<Object> pcapByte= spark.sql(args[2]).toJavaRDD().map(row->row.get(0));
-
+        pcapByte.cache();
         //pcapByte.foreach(x->System.out.println(new BytesWritable((byte[])((byte[])(x)))));
         DataOutputStream dos = new DataOutputStream(new FileOutputStream(args[1]));
         byte pcapHeader[] = new byte[]{(byte) 0xD4, (byte) 0xC3, (byte) 0xB2, (byte) 0xA1, 0x02, 0x00, 0x04,
                 0x00,0x00, 0x00, 0x00, 0x00, 0x00, 0x00,0x00,0x00,0x00,0x00,0x04,0x00,0x01,0x00,0x00,0x00};
         dos.write(pcapHeader,0,24);
         List<byte[]> list=new ArrayList<>();
-
-
-        list=pcapByte.map(x->{//
-            long packetSize = PcapReaderUtil.convertInt((byte[])((byte[])(x)), 8, false);
-            int l=(int)packetSize+16;
-            byte[] a=new byte[l];
-            System.arraycopy((byte[])((byte[])(x)),0,a,0,l);
-            return a;
-        }).collect();
+        pcapByte.foreach(x->{
+            int a=0;
+        });
         long endTime = System.currentTimeMillis();
-        System.out.println("search运行时间：" + (endTime - startTime) + "ms");
         long startTime1 = System.currentTimeMillis();
-        list.forEach(tt->{
-            //System.out.println(new BytesWritable(tt));
+        pcapByte.collect().forEach(tt->{
+            byte[] a=(byte[])((byte[])(tt));
+            long packetSize = PcapReaderUtil.convertInt(a, 8, false);
+            int l=(int)packetSize+16;
             try {
-                dos.write(tt, 0, tt.length);
+                dos.write(a, 0, l);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+
+        System.out.println("search运行时间：" + (endTime - startTime) + "ms");
         long endTime1 = System.currentTimeMillis();
         System.out.println("merge运行时间：" + (endTime1 - startTime1) + "ms");
         //spark.sql("SELECT * FROM src").show();
