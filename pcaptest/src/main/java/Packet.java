@@ -39,6 +39,13 @@ public class Packet extends HashMap<String, Object> {
 	public static final String REASSEMBLED_TCP_FRAGMENTS = "reassembled_tcp_fragments";
 	public static final String REASSEMBLED_DATAGRAM_FRAGMENTS = "reassembled_datagram_fragments";
 
+	//-------------------------------
+	//private static final long serialVersionUID = -6989112201605879976L;
+
+	public static final String HTTP_HEADERS = "http_headers";
+
+
+
 	public Flow getFlow() {
 		String src = (String)get(Packet.SRC);
 		Integer srcPort = (Integer)get(Packet.SRC_PORT);
