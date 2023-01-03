@@ -2,6 +2,12 @@
 * 5 parameters in para list
 * [path of input seqfile] [path of output data chart] [path of output graph source chart] [bps or pps] [choice]
 * choice:0-100ms, 1-1s
+* example:
+* /home/ysh/IdeaProjects/pcap_scala3/repo/bigfile.seq
+/home/ysh/IdeaProjects/pcap_scala3/repo/testmsD100bps.csv
+/home/ysh/IdeaProjects/pcap_scala3/repo/testmsG100bps.csv
+bps
+0
 * */
 
 

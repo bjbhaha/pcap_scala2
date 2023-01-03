@@ -27,12 +27,20 @@ public class pcaptest2 {
         SparkSession spark = SparkSession
                 .builder()
                 .appName("Java Spark Hive Example")
-                //.master("local[*]")
                 .config("hive.metastore.uris","thrift://master:9083")
                 //.config("spark.sql.warehouse.dir", warehouseLocation)
                 .config("spark.driver.maxResultSize",0)
                 .enableHiveSupport()
                 .getOrCreate();
+
+        //.master("local[*]")
+        //.master("yarn")//
+        //.config("spark.submit.deployMode", "cluster")//
+        //.config("executor-memory",20)//
+        //.config("num-executors",2)//
+        //.config("executor-cores",60)//
+        //.config("driver-memory",10)//
+
 
         //.config("spark.sql.warehouse.dir","/home/bjbhaha/IdeaProjects/pcap_scala2/pcaptest")
         //spark.sql("CREATE TABLE IF NOT EXISTS src (TIMESTAMP long, TIMESTAMP_USEC long,TIMESTAMP_MICROS long) USING hive OPTIONS(fileFormat 'org.apache.hadoop.mapred.SequenceFileAsBinaryInputFormat',outputFormat 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat',serde 'MySerDe')");
@@ -63,8 +71,8 @@ public class pcaptest2 {
         pcapByte.cache();
         //pcapByte.foreach(x->System.out.println(new BytesWritable((byte[])((byte[])(x)))));
         DataOutputStream dos = new DataOutputStream(new FileOutputStream(args[1]));
-        byte pcapHeader[] = new byte[]{(byte) 0xD4, (byte) 0xC3, (byte) 0xB2, (byte) 0xA1, 0x02, 0x00, 0x04,
-                0x00,0x00, 0x00, 0x00, 0x00, 0x00, 0x00,0x00,0x00,0x00,0x00,0x04,0x00,0x01,0x00,0x00,0x00};
+        byte pcapHeader[] = new byte[]{(byte) 0x4D, (byte) 0x3C, (byte) 0xB2, (byte) 0xA1, 0x02, 0x00, 0x04,
+                0x00,0x00, 0x00, 0x00, 0x00, 0x00, 0x00,0x00,0x00,0x00,0x00,0x01,0x00,0x01,0x00,0x00,0x00};
         dos.write(pcapHeader,0,24);
         List<byte[]> list=new ArrayList<>();
         pcapByte.foreach(x->{
@@ -86,6 +94,7 @@ public class pcaptest2 {
         System.out.println("search运行时间：" + (endTime - startTime) + "ms");
         long endTime1 = System.currentTimeMillis();
         System.out.println("merge运行时间：" + (endTime1 - startTime1) + "ms");
+        dos.close();//-------------
         //spark.sql("SELECT * FROM src").show();
     }
 }

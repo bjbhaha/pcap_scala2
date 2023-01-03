@@ -45,7 +45,7 @@ public class CSVUtils {
                     bw.close();
                     bw=null;
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
             }
             if(osw!=null){
@@ -61,7 +61,7 @@ public class CSVUtils {
                     out.close();
                     out=null;
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
             }
         }
@@ -91,7 +91,7 @@ public class CSVUtils {
                     br.close();
                     br=null;
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
             }
         }

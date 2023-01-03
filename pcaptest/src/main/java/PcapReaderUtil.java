@@ -80,7 +80,7 @@ public class PcapReaderUtil {
 		try {
 			return InetAddress.getByAddress(addr).getHostAddress();
 		} catch (UnknownHostException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			return null;
 		}
 	}

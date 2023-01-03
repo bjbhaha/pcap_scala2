@@ -81,4 +81,14 @@ public class Packet extends HashMap<String, Object> {
 		return protocol == "TCP";
 	}
 
+	public Rtm getRtm() {
+		String src = (String)get(Packet.SRC);
+		String dst = (String)get(Packet.DST);
+		Integer srcPort = (Integer)get(Packet.SRC_PORT);
+		Integer dstPort = (Integer)get(Packet.DST_PORT);
+		Long tcpSeq = (Long) get(Packet.TCP_SEQ);
+		//Long len = Long.valueOf("Packet.LEN.toString");
+		Integer len = (Integer)get(Packet.LEN);
+		return new Rtm(src, dst, srcPort, dstPort, tcpSeq, len);
+	}
 }
