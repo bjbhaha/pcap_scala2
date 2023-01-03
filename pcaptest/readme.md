@@ -12,4 +12,5 @@ usage:
 "'hdfs:///user/hive/warehouse/src/line1_1119.seq'" 
 "/home/baijb/guoPai/file_cluster.pcap" 
 "SELECT pcapByte FROM src where src regexp '180.158.148.194' or dst regexp '180.158.148.194'" 
-1   
+1       
+
