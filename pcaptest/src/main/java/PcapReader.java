@@ -639,6 +639,7 @@ public class PcapReader implements Iterable<Packet> {
 			return false;
 		} catch (IOException e) {
 			//e.printStackTrace();
+			//注释打印调试信息(代码审计修改)
 			return false;
 		}
 	}

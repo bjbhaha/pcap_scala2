@@ -81,6 +81,7 @@ public class PcapReaderUtil {
 			return InetAddress.getByAddress(addr).getHostAddress();
 		} catch (UnknownHostException e) {
 			//e.printStackTrace();
+			//注释打印调试信息(代码审计修改)
 			return null;
 		}
 	}

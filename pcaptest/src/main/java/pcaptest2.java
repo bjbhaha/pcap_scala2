@@ -94,7 +94,7 @@ public class pcaptest2 {
         System.out.println("search运行时间：" + (endTime - startTime) + "ms");
         long endTime1 = System.currentTimeMillis();
         System.out.println("merge运行时间：" + (endTime1 - startTime1) + "ms");
-        dos.close();//-------------
+        dos.close();//关闭文件流DataOutputStream(代码审计修改)
         //spark.sql("SELECT * FROM src").show();
     }
 }
