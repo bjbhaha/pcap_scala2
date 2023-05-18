@@ -479,7 +479,7 @@ public class PcapReader implements Iterable<Packet> {
 	}
 
 	private void buildInternetProtocolV4Packet(Packet packet, byte[] packetData, int ipStart) {
-		long id = new Long(PcapReaderUtil.convertShort(packetData, ipStart + IP_ID_OFFSET));
+		long id = PcapReaderUtil.convertShort(packetData, ipStart + IP_ID_OFFSET);
 		packet.put(Packet.ID, id);
 
 		int flags = packetData[ipStart + IP_FLAGS_OFFSET] & 0xE0;
